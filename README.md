@@ -241,7 +241,7 @@ You can log into the admin interface with the username `admin` and the string yo
 ### Integrate and train model
 
 There are multiple ways to load and use Rasa models. You could e.g. connect an external Rasa Open Source service to your deployment or you could use a model storage. However, in this case we use Rasa X with GitHub integration to manage our models.<br> 
-After logging into your Rasa X admin interface, head over and connect the GitHub repository containing your chatbot configuration. If you follow this guide step-by-step, you should already have cloned or forked this repistory. You can now connect your clone/fork with Rasa X. You can do this via the admin GUI and it is pretty straightforward. It will give you a SSH Key, which you have to provide to your GitHub account. <br/>
+After logging into your Rasa X admin interface, head over and connect the GitHub repository containing your chatbot configuration. If you follow this guide step-by-step, you should already have cloned or forked this repository. You can now connect your clone/fork with Rasa X. You can do this via the admin GUI and it is pretty straightforward. It will give you a SSH Key, which you have to provide to your GitHub account. <br/>
 <br/>
 After you have connected your GitHub account, Rasa X will synchronize your chatbot configuration. This can sometimes take a couple of minutes. If your configuration has been loaded successfully, you can train and activate your model from the Rasa X interface. <br>
 <br>
@@ -292,7 +292,7 @@ docker save rasa-webservice > rasa-webservice.tar
 ```
 3. Import the image to the local microk8s registry:
 ```sh
-docker save rasa-webservice > rasa-webservice.tar
+microk8s ctr image import rasa-webservice.tar
 ```
 4. Confirm that the image has been imported:
 ```sh
@@ -300,6 +300,8 @@ microk8s ctr images ls
 ```
 You can now remove the `rasa-webservice.tar` on your filesystem if you like.<br> 
 If you don't what the hazzle of storing your image on the local microk8s registry only, feel free to simply use a remote registry instead. In this case, make sure to edit the `k8s-configs/basic-webservice.yaml` to reference your username for Docker Hub. 
+
+(<b>Update:</b> Apparently there is a new, less complicated way of using local images with the micro8s registry: https://microk8s.io/docs/registry-images)
 
 #### Deploy Webservice
 Because the k8s LoadBalancer works on Layer 7, you need a Domain Name that points to the external IP Address of your server for the next step. Alternatively you can use services like https://nip.io/. 
@@ -433,7 +435,7 @@ docker build . -t YOUR-DOCKER-HUB-USERNAME/example-action-server:latest
 ```
 3. (Optional) Push to docker hub:
 ```sh
-docker build . -t YOUR-DOCKER-HUB-USERNAME/example-action-server:latest
+docker push YOUR-DOCKER-HUB-USERNAME/example-action-server:latest
 ```
 4. (Required) Edit `rasax/tls-values-with-actions.yml` to reflect your IP, domain and token + secret strings. <br>
    <br>
